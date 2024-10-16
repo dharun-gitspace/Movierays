@@ -1,0 +1,36 @@
+/* Full container for the slider */
+.slider-container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  /* Each individual slide should take up 1/3 of the screen width */
+  .slide {
+    width: 100%;
+    height: 100vh; /* Full viewport height to ensure all images take up the same space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire container without stretching */
+    display: block;
+  }
+  
+  .slick-slide {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .slick-track {
+    display: flex;
+  }
+  
+  .slick-list {
+    padding: 0;
+  }
+  
