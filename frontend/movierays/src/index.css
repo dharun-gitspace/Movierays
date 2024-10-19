@@ -2,57 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* google fonts */
-.poppins-thin {
-  font-family: "Poppins", sans-serif;
-  font-weight: 100;
-  font-style: normal;
+/* Global Font Settings */
+body {
+  font-family: 'DM Sans', 'Figtree', sans-serif;
 }
 
-.poppins-extralight {
-  font-family: "Poppins", sans-serif;
-  font-weight: 200;
-  font-style: normal;
-}
+/* Custom Classes for Specific Weights and Styles */
 
-.poppins-light {
-  font-family: "Poppins", sans-serif;
+/* DM Sans */
+.dm-sans-light {
+  font-family: 'DM Sans', sans-serif;
   font-weight: 300;
-  font-style: normal;
 }
 
-.poppins-regular {
-  font-family: "Poppins", sans-serif;
+.dm-sans-regular {
+  font-family: 'DM Sans', sans-serif;
   font-weight: 400;
-  font-style: normal;
 }
 
-.poppins-medium {
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.poppins-semibold {
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-style: normal;
-}
-
-.poppins-bold {
-  font-family: "Poppins", sans-serif;
+.dm-sans-bold {
+  font-family: 'DM Sans', sans-serif;
   font-weight: 700;
-  font-style: normal;
 }
 
-.poppins-extrabold {
-  font-family: "Poppins", sans-serif;
-  font-weight: 800;
-  font-style: normal;
+/* Figtree */
+.figtree-light {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 300;
 }
 
-.poppins-black {
-  font-family: "Poppins", sans-serif;
-  font-weight: 900;
-  font-style: normal;
+.figtree-regular {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 400;
+}
+
+.figtree-semibold {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 600;
+}
+
+.figtree-bold {
+  font-family: 'Figtree', sans-serif;
+  font-weight: 700;
 }
