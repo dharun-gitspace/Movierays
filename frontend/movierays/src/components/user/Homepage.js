@@ -1,12 +1,22 @@
+// Homepage.js
 import React from "react";
 import Navbar from "./Navbar"; // Import Navbar
-import MovieCard from "./MovieCard"; // Card component for movie display
+import MovieCarousel from "../movie/MovieCarousel"; // Import MovieCarousel
 
 const genres = ["Action", "Comedy", "Drama", "Horror", "Romance"]; // Sample genres
 
 const Homepage = () => {
+  // Sample movie titles for each genre
+  const sampleMovies = {
+    Action: ["Action Movie 1", "Action Movie 2", "Action Movie 3", "Action Movie 4"],
+    Comedy: ["Comedy Movie 1", "Comedy Movie 2", "Comedy Movie 3", "Comedy Movie 4"],
+    Drama: ["Drama Movie 1", "Drama Movie 2", "Drama Movie 3", "Drama Movie 4"],
+    Horror: ["Horror Movie 1", "Horror Movie 2", "Horror Movie 3", "Horror Movie 4"],
+    Romance: ["Romance Movie 1", "Romance Movie 2", "Romance Movie 3", "Romance Movie 4"],
+  };
+
   return (
-    <div className="min-h-screen bg-yellow-300">
+    <div className="min-h-screen bg-gray-900">
       {/* Navbar */}
       <Navbar />
 
@@ -20,18 +30,13 @@ const Homepage = () => {
       </div>
 
       {/* Movies Section */}
-      {genres.map((genre) => (
-        <div key={genre} className="container mx-auto px-4 py-6">
-          <h2 className="text-2xl font-bold text-black mb-4">{genre}</h2>
-          <div className="flex gap-4 overflow-x-scroll">
-            {/* Sample Movie Cards */}
-            <MovieCard title={`${genre} Movie 1`} />
-            <MovieCard title={`${genre} Movie 2`} />
-            <MovieCard title={`${genre} Movie 3`} />
-            <MovieCard title={`${genre} Movie 4`} />
+      <div className="container mx-auto px-4">
+        {genres.map((genre) => (
+          <div key={genre} className="py-6">
+            <MovieCarousel genre={genre} movies={sampleMovies[genre]} />
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,15 @@
+.movie-card {
+  width: 200px; /* Fixed width for cards */
+  height: 300px; /* Fixed height for cards */
+  margin-right: 16px; /* Space between cards */
+  background-color: #222; /* Dark background for cards */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: transform 0.3s; /* Animation on hover */
+}
+
+.movie-card:hover {
+  transform: scale(1.05); /* Slightly enlarge card on hover */
+}
