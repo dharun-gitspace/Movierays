@@ -1,3 +1,4 @@
+
 const GettingStarted = () => {
   return (
     <section className="bg-transparent">
