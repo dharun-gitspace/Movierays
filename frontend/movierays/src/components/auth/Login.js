@@ -5,6 +5,10 @@ import { eyeOff } from "react-icons-kit/feather/eyeOff";
 import MovieSlider from "../shared/Movieslider";
 
 const Login = () => {
+  const dummyUserObject = {
+    username: "dharun",
+    password: "password",
+  }
   // State for toggling password visibility
   const [passwordVisible, setPasswordVisible] = useState(false);
 

@@ -1,5 +1,5 @@
 import React from "react";// Assuming Navbar is under user folder
-import Header from "../shared/Header";
+import Header from "../shared/GetStartHeader";
 const plans = [
   {
     name: "Monthly",
