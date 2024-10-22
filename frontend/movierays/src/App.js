@@ -5,10 +5,11 @@ import Login from "./components/auth/Login";
 // import Register from "./components/auth/Register";
 import AdminDashboard from "./components/admin/AdminDashboard";
 import Homepage from "./components/user/Homepage";
-// import SignUp from "./components/auth/Register";
+import SignUp from "./components/auth/Register";
 import Subscription from "./components/user/Subscription";
 import LandingPage from "./components/shared/Landingpage";
 import NotFound from "./components/NotFound";
+
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path="/subscription" element={<Subscription />} />
         <Route exact path="/login" element={<Login />} />
         <Route path="*" element={<NotFound />} />
+        <Route exact path="/register" element={<SignUp />} />
 
         {/* <Route exact path="/register" component={SignUp} /> */}
       </Routes>
