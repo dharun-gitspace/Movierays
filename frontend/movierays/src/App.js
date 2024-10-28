@@ -10,7 +10,6 @@ import Subscription from "./components/user/Subscription";
 import NotFound from "./components/NotFound";
 import EditProfile from "./components/user/EditProfile";
 import MovieDetailsPage from "./components/user/MovieDetailsPage";
-
 function App() {
   return (
     <Router>

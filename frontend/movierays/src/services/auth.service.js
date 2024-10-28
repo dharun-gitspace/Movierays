@@ -1,5 +1,5 @@
 import axios from "axios";
-// import authHeader from "./auth-header";
+import { getAuthHeader } from "./auth-header";
 const API_URL = "http://localhost:8080/api/user/";
 
 class AuthService {
@@ -43,23 +43,7 @@ class AuthService {
   }
 
   async editProfile(userData) {
-    const tokenDetails = localStorage.getItem("user");
-    const accessToken = tokenDetails
-      ? JSON.parse(tokenDetails).accessToken
-      : null;
-
-    // Log the token to ensure it is available
-    console.log("Access Token:", accessToken);
-
-    // Create headers object
-    const headers = {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:3000",
-    };
-
-    // Log the complete headers
-    console.log("Request Headers:", headers);
+    const headers = getAuthHeader();
     try {
       const response = await axios.post(API_URL + "edit-profile", userData, {
         headers,

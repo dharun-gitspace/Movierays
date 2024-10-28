@@ -30,17 +30,6 @@ const EditProfile = () => {
         password,
       };
 
-      // Retrieve the access token from the user object
-      const user = JSON.parse(localStorage.getItem("user"));
-      const token = user ? user.accessToken : null;
-
-      console.log(token); // This should now log the correct access token
-
-      if (!token) {
-        console.error("No access token found");
-        return;
-      }
-
       const response = await AuthService.editProfile(updatedUser);
       console.log("Profile updated:", response.data); // Accessing data safely
       setMessage("Profile updated successfully!");

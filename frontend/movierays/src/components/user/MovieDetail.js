@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MoviePlayer from "./MoviePlayer";
+import { getAuthHeader } from "../../services/auth-header";
 
 const MovieDetail = ({ movie }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const [showPlayer, setShowPlayer] = useState(false); // State to control MoviePlayer visibility
-
+  const headers = getAuthHeader();
   useEffect(() => {
     const fetchThumbnail = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/movies/thumbnail/${movie.id}`,
-          { responseType: "blob" }
+          { headers, responseType: "blob" }
         );
         const imageUrl = URL.createObjectURL(response.data);
         setThumbnailUrl(imageUrl);

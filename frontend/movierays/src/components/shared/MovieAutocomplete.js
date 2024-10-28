@@ -1,11 +1,11 @@
 // MovieAutocomplete.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { getAuthHeader } from "../../services/auth-header";
 const MovieAutocomplete = ({ onMovieSelect }) => {
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-
+  const headers = getAuthHeader();
   useEffect(() => {
     if (query.length > 1) {
       const fetchSuggestions = async () => {
@@ -14,6 +14,7 @@ const MovieAutocomplete = ({ onMovieSelect }) => {
             `http://localhost:8080/api/movies/search`,
             {
               params: { query },
+              headers,
             }
           );
           setSuggestions(response.data);

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-
+import { getAuthHeader } from "../../services/auth-header";
 const MoviePlayer = ({ movieId }) => {
   const [videoUrl, setVideoUrl] = useState("");
-
+  const headers = getAuthHeader();
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/movies/watch/${movieId}`,
-          { responseType: "blob" }
+          { headers, responseType: "blob" }
         );
         const url = URL.createObjectURL(response.data);
         setVideoUrl(url);

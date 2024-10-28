@@ -1,8 +1,7 @@
 // MovieCarousel.js
 import React, { useState } from "react";
 import MovieCard from "./MovieCard";
-
-const MovieCarousel = ({ genre, movies }) => {
+const MovieCarousel = ({ genre, movies, onMovieSelect, headers}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardWidth = 220; // Width of the card including margin
   const cardMargin = 16; // Margin between cards
@@ -35,14 +34,19 @@ const MovieCarousel = ({ genre, movies }) => {
             className="flex transition-transform duration-500"
             style={{ transform: `translateX(-${currentIndex * (cardWidth + cardMargin)}px)` }}
           >
-            {movies.map((movie, index) => (
-              <MovieCard key={index} title={movie} />
+            {movies.map((movie) => (
+              <MovieCard 
+                key={movie.id}
+                movie={movie}
+                onMovieSelect={() => onMovieSelect(movie.id)}
+                headers = {headers}
+              />
             ))}
           </div>
         </div>
         <button
           onClick={handleNext}
-          disabled={currentIndex === movies.length - 1}
+          disabled={currentIndex >= movies.length - 1}
           className="absolute right-0 z-10 bg-gray-800 text-white p-2 rounded-md"
         >
           &gt;
