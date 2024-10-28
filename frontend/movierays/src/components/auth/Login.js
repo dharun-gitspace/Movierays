@@ -1,28 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Icon } from "react-icons-kit";
 import { eye } from "react-icons-kit/feather/eye";
 import { eyeOff } from "react-icons-kit/feather/eyeOff";
 import MovieSlider from "../shared/Movieslider";
-
-const Login = () => {
-  const dummyUserObject = {
-    username: "dharun",
-    password: "password",
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import AuthService from "../../services/auth.service";
+import Form from "react-validation/build/form";
+import CheckButton from "react-validation/build/button";
+import { isEmail } from "validator";
+const required = (value) => {
+  if (!value) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This field is required!
+      </div>
+    );
   }
-  // State for toggling password visibility
+};
+const validEmail = (value) => {
+  if (!isEmail(value)) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        This is not a valid email.
+      </div>
+    );
+  }
+};
+const Login = () => {
+  let navigate = useNavigate();
+  const location = useLocation();
+  const form = useRef();
+  const checkBtn = useRef();
+
+  const emailFromState = location.state?.email || "";
+  const [email, setEmail] = useState(emailFromState);
+  const [password, setPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
-
-  // State for 'Remember Me' checkbox
-  const [rememberMe, setRememberMe] = useState(false);
-
+  const [message, setMessage] = useState("");
   // Function to toggle password visibility
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-  // Function to handle 'Remember Me' checkbox change
-  const handleRememberMeChange = () => {
-    setRememberMe(!rememberMe);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value); // Update the email state
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value); // Update the password state
+  };
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    setMessage(""); // Reset message on form submission
+
+    form.current.validateAll(); // Validate the form
+
+    if (checkBtn.current.context._errors.length === 0) {
+      AuthService.login(email, password).then(
+        () => {
+          navigate("/homepage");
+        },
+        (error) => {
+          const resMessage =
+            error.response && error.response.data // Check if response exists
+              ? error.response.data // Use the entire response body if it's available
+              : error.message || error.toString(); // Fallback to error message or string
+          setMessage(resMessage); // Set the error message
+        }
+      );
+    }
   };
 
   return (
@@ -43,7 +91,7 @@ const Login = () => {
           </h1>
 
           {/* Login Form */}
-          <form className="space-y-8">
+          <Form className="space-y-8" onSubmit={handleLogin} ref={form}>
             <h2 className="figtree-bold text-center text-2xl text-white">
               Sign in to your account
             </h2>
@@ -54,6 +102,9 @@ const Login = () => {
                 type="email"
                 className="w-full rounded-lg border-gray-300 p-4 pr-12 figtree-semibold shadow-md focus:outline-none focus:ring focus:ring-yellow-500"
                 placeholder="Enter email"
+                value={email} // Set the value from state
+                onChange={handleEmailChange} // Update email state on change
+                validations={[required, validEmail]}
               />
               <span className="absolute inset-y-0 right-0 grid place-content-center px-4">
                 <svg
@@ -79,6 +130,9 @@ const Login = () => {
                 type={passwordVisible ? "text" : "password"}
                 className="w-full rounded-lg border-gray-300 p-4 pr-12 figtree-semibold shadow-md focus:outline-none focus:ring focus:ring-yellow-500"
                 placeholder="Enter password"
+                value={password}
+                onChange={handlePasswordChange} // Update password state on change
+                validations={[required]}
               />
               <span
                 className="absolute inset-y-0 right-0 grid place-content-center px-4 cursor-pointer"
@@ -86,23 +140,6 @@ const Login = () => {
               >
                 <Icon icon={passwordVisible ? eyeOff : eye} size={20} />
               </span>
-            </div>
-
-            {/* Remember Me Checkbox */}
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                className="mr-2 h-5 w-5 text-black border-gray-300 rounded  checked:bg-yellow-300 checked:border-yellow-300 checked:text-black cursor-pointer"
-                checked={rememberMe}
-                onChange={handleRememberMeChange}
-              />
-              <label
-                htmlFor="rememberMe"
-                className="text-sm text-gray-400 figtree-semibold"
-              >
-                Remember me
-              </label>
             </div>
 
             {/* Submit Button */}
@@ -116,14 +153,26 @@ const Login = () => {
             {/* Link to Sign-up */}
             <p className="text-center text-sm text-gray-400">
               No account?{" "}
-              <a
+              <Link
+                to={"/signup"}
                 className="underline text-yellow-300 hover:text-yellow-400"
-                href="#"
               >
                 Sign up
-              </a>
+              </Link>
             </p>
-          </form>
+            {/* displaying the error message */}
+            {message && (
+              <div className="form-group">
+                <div
+                  className="text-red-600 figtree-semibold text-center"
+                  role="alert"
+                >
+                  {message}
+                </div>
+              </div>
+            )}
+            <CheckButton style={{ display: "none" }} ref={checkBtn} />
+          </Form>
         </div>
       </div>
     </div>

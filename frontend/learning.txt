@@ -1,0 +1,77 @@
+Two ways to create components:
+
+    Functional components:
+        Introduced with react hooks.
+        No lifecycle methods : replaced by hooks.
+        State managed by using useState and Hooks.
+        Just regualr JS functions which returns JSX.
+    Class components:
+        instead of functions w'll write the Class.
+        import React,{Components} from 'react';
+        render(return(
+            //jsx code goes here
+        ))
+    Where to use Functional and Class components : 
+        Functional components are easir to write functions.
+        State managed by using this.state and this.setState.
+        Class components can have its own constructors.
+Props:
+    props is data that you send to the component.
+    Props only get sent from the parent to child components.
+    You can pass any no of props to the component
+Deafult Props:
+    when your not pasing a props to a child component if the child component expects the props so we define
+    default props to the child component.
+    syntax : ComponentName.defaultProps={//default props}
+Contditional rendering:
+    Showing components only on certain conditions.
+    eg : If the user is logged in show the certain details or components.
+    Use if or ternary operators within JSX to conditionally render components.
+    Null or no rendering.
+    syntax : Condition (output) <else Condition> output.
+    {props.isAdmin && <p>When you are passing the isAdmin property then it will print this template</p>}
+Handling events : 
+    The events in react app are same as the events in javascript events.
+    Paramters can be passed to the events.
+    There are two ways to implement the events.
+        we can use or refer the event handler in the parent component.
+        The event handler can be in the child itself.
+    We can prevent the behavior using event.preventDefault.
+    We are passing the event as a prop.
+    Passing events is unidirectional -> form parent to child component.
+Callback from child component to parent component : (sending data from child component to parent component):
+    functions LoanApp(props)    //child component
+    {
+        const submitLoan = () => {
+            const userApp = {userId : 1, userName : "Dharun"}
+            props.onLoanSubmit(userApp)
+        }
+        retrun(
+            <button onClick={submitLoan}>submit loan button</button>
+        )
+    }
+    function Loan()    //parent component
+    {
+        const handleLoanAppSubmit = (data) => {
+            console.log(data);
+        }
+        retrun{
+            <div>
+                <p>Message from the child</p>
+                <LoanApp onLoanSubmit={handleLoanAppSubmit}></LoanApp> //When the button from the child Component is clicked 
+                //it will trigger the function in the child and onLoanSubmit will set the userApp 
+                //and onLoanSubmit will make the handleLoanAppSubmit prop to display the userApp.
+            </div>
+        }
+    }
+
+Hooks :
+    making it to create reusable and maintainable code in functional components
+    introduced in reat 16.8 as a way to add state and lifecycle features to the functional components.
+useState Hook : 
+    Allows functional components to manage local state.
+    State : A instance at that point of time. if you have the value for A = 10 at any point of time if the value of A changes then here is a state change.
+    it return an array with two elements: the current state value and a function to update that value.
+    When you call the update function returned by the useState, React will re render the component with the new state value.
+useEffect Hook:
+    

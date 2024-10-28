@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import MovieSlider from "../shared/Movieslider";
-
+import { useLocation, Link } from "react-router-dom"; // Import useLocation to access navigation state
 const SignUp = () => {
-  const [countryCode, setCountryCode] = useState("+1"); // Default country code
+  // Access the email from the navigation state
+  const location = useLocation();
+  const emailFromState = location.state?.email || ""; // Default to an empty string if no email is provided
+  const [email, setEmail] = useState(emailFromState); // Initialize email state with the value from the state
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [dob, setDob] = useState(""); // State for Date of Birth
 
-  const handleCountryCodeChange = (e) => {
-    setCountryCode(e.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value); // Update the email state
   };
 
   const togglePasswordVisibility = () => {
@@ -62,25 +65,31 @@ const SignUp = () => {
               />
             </div>
 
-            {/* Phone with Country Selector */}
+            {/* Email Input */}
             <div className="relative">
-              <div className="flex">
-                <select
-                  className="rounded-l-lg border-gray-300 p-3 figtree-semibold shadow-md focus:outline-none focus:ring focus:ring-yellow-500"
-                  value={countryCode}
-                  onChange={handleCountryCodeChange}
+              <input
+                type="email"
+                className="w-full rounded-lg border-gray-300 p-4 pr-12 figtree-semibold shadow-md focus:outline-none focus:ring focus:ring-yellow-500"
+                placeholder="Enter email"
+                value={email} // Set the value from state
+                onChange={handleEmailChange} // Update email state on change
+              />
+              <span className="absolute inset-y-0 right-0 grid place-content-center px-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
                 >
-                  <option value="+1">+1 (USA)</option>
-                  <option value="+44">+44 (UK)</option>
-                  <option value="+91">+91 (India)</option>
-                  {/* Add more countries as needed */}
-                </select>
-                <input
-                  type="tel"
-                  className="w-full rounded-r-lg border-gray-300 p-3 figtree-semibold shadow-md focus:outline-none focus:ring focus:ring-yellow-500"
-                  placeholder="Phone Number"
-                />
-              </div>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
+              </span>
             </div>
 
             {/* Password Input */}
@@ -126,12 +135,12 @@ const SignUp = () => {
             {/* Link to Sign-in */}
             <p className="text-center text-sm text-gray-400">
               Already have an account?{" "}
-              <a
+              <Link to ={"/login"}
                 className="underline text-yellow-300 hover:text-yellow-400"
                 href="#"
               >
                 Sign in
-              </a>
+              </Link>
             </p>
           </form>
         </div>

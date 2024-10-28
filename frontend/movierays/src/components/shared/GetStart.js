@@ -1,5 +1,25 @@
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const GettingStarted = () => {
+  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/user/check-email?email=${email}`
+      );
+      if (response.data) {
+        navigate("/login", { state: { email } }); // Redirect to login if email exists
+      } else {
+        navigate("/signup", { state: { email } }); // Redirect to signup if email doesn't exist
+      }
+    } catch (error) {
+      console.error("Error checking email:", error);
+    }
+  };
   return (
     <section className="bg-transparent">
       <div className="p-8 md:p-12 lg:px-16 lg:py-24">
@@ -15,7 +35,7 @@ const GettingStarted = () => {
         </div>
 
         <div className="mx-auto mt-8 max-w-xl">
-          <form action="#" className="sm:flex sm:gap-2">
+          <form action="#" className="sm:flex sm:gap-2" onSubmit={handleSubmit}>
             <div className="sm:flex-1">
               <label htmlFor="email" className="sr-only">
                 Email
@@ -25,6 +45,8 @@ const GettingStarted = () => {
                 type="email"
                 placeholder="Email address"
                 className="w-full rounded-md border-gray-200 bg-white p-3 figtree-semibold text-gray-900 shadow-sm transition focus:border-white focus:outline-none focus:ring focus:ring-yellow-400"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
