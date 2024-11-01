@@ -2,8 +2,11 @@ package com.movierays.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movierays.controller.AdminMovieController;
 import com.movierays.model.Movie;
 import com.movierays.repository.MovieRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
+    private static final Logger logger = LoggerFactory.getLogger(MovieService.class);
     private final HashMap<String, List<Movie>> searchCache = new HashMap<>();
     public Optional<Movie> getMovieById(String id) {
         return movieRepository.findById(id);
@@ -36,6 +40,15 @@ public class MovieService {
         searchCache.put(query, movies); // Cache the result
         return movies;
     }
+    public Boolean searchMovieByName(String movieName) {
+
+        Movie movie = movieRepository.findByName(movieName);
+        if (movie!= null) {
+            return true;
+        }
+        return false;
+    }
+
 
     public Movie createMovie(Movie movie) {
         return movieRepository.save(movie);
@@ -111,7 +124,7 @@ public class MovieService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
+        logger.info("started uploading Movie {} by admin",movieDetails.getName());
         // Save files (thumbnail and trailer) to local storage
         String thumbnailUrl = saveFileToLocal(thumbnail, "thumbnail");
         String trailerUrl = saveFileToLocal(trailer, "movie");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { fetchSuggestions } from "../../services/movie.service"; // Import the function
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -8,21 +8,21 @@ const SearchBar = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (searchQuery.length >= 2) {
-      const fetchSuggestions = async () => {
+    const getSuggestions = async () => {
+      if (searchQuery.length >= 2) {
         try {
-          const response = await axios.get(`http://localhost:8080/api/movies/search`, {
-            params: { query: searchQuery },
-          });
-          setSuggestions(response.data);
+          const data = await fetchSuggestions(searchQuery); // Use the new function
+          setSuggestions(data);
         } catch (error) {
           console.error("Error fetching movie suggestions:", error);
+          setSuggestions([]); // Clear suggestions on error
         }
-      };
-      fetchSuggestions();
-    } else {
-      setSuggestions([]); // Clear suggestions if input is short
-    }
+      } else {
+        setSuggestions([]); // Clear suggestions if input is short
+      }
+    };
+
+    getSuggestions();
   }, [searchQuery]);
 
   const handleSelectMovie = (movieId) => {

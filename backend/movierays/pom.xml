@@ -33,11 +33,6 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>s3</artifactId>
-            <version>2.20.89</version> <!-- Ensure this is compatible with your project -->
-        </dependency>
 
         <!-- MongoDB Starter -->
         <dependency>
@@ -60,11 +55,11 @@
         </dependency>
 
         <!-- Lombok -->
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <optional>true</optional>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.projectlombok</groupId>-->
+        <!--            <artifactId>lombok</artifactId>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
 
         <!-- Spring Boot Test -->
         <dependency>
@@ -91,6 +86,7 @@
             <artifactId>spring-boot-starter-cache</artifactId>
             <version>3.1.5</version>
         </dependency>
+
     </dependencies>
 
 

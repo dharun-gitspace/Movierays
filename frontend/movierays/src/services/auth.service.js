@@ -18,7 +18,7 @@ class AuthService {
           );
         }
 
-        return response.data; // Return user object or error message
+        return response; // Return user object or error message
       })
       .catch((error) => {
         // Handle error if needed

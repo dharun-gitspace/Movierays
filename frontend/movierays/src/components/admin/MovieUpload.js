@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { getAuthHeader } from "../../services/auth-header";
 
 const MovieUpload = () => {
+  const headers = getAuthHeader();
   const [genres] = useState(["Action", "Comedy", "Drama", "Sci-Fi"]);
   const [categories] = useState([
     "Rated G",
@@ -19,12 +22,99 @@ const MovieUpload = () => {
   const [movieFile, setMovieFile] = useState(null);
   const [genre, setGenre] = useState("");
   const [category, setCategory] = useState("");
+  const [movieExists, setMovieExists] = useState(false); // State to track if movie exists
+  const [uploadMessage, setUploadMessage] = useState(""); // State for upload message
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  // Function to check if movie exists by name
+  const checkMovieExists = async (name) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/movies/search/name`,
+        { params: { name }, headers }
+      );
+      setMovieExists(response.data); // Set state based on response
+    } catch (error) {
+      console.error("Error checking movie existence:", error);
+    }
+  };
+
+  // Handle movie name change
+  const handleMovieNameChange = (e) => {
+    setMovieName(e.target.value);
+  };
+
+  // Handle blur event to check for movie existence
+  const handleMovieNameBlur = () => {
+    if (movieName) {
+      checkMovieExists(movieName);
+    } else {
+      setMovieExists(false); // Reset state if movie name is empty
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    navigate("/"); // Navigate back to dashboard after submission
+
+    // Create FormData object to send files and data
+    const formData = new FormData();
+    formData.append("thumbnail", thumbnail);
+    formData.append("trailer", movieFile); // Assuming you meant to send the trailer file here
+    formData.append(
+      "movieDetails",
+      JSON.stringify({
+        name: movieName,
+        description: movieDescription,
+        imdbRating: imdbRating,
+        category: category,
+        genre: genre,
+        releaseDate: releaseDate,
+        duration: duration,
+      })
+    );
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/admin/movies",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${headers.Authorization.split(" ")[1]}`,
+            "Content-Type": "multipart/form-data",
+
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+          },
+          timeout: 15000,
+        }
+      );
+
+      if (response.status === 200) {
+        setUploadMessage("Movie uploaded successfully!"); // Set success message
+        resetForm();
+
+        // Navigate to the admin page after 3 seconds
+        setTimeout(() => {
+          navigate("/admin"); // Replace "/admin" with the correct admin page path
+        }, 3000); // 3000 ms = 3 seconds
+      }
+    } catch (error) {
+      console.error("Failed to upload movie:", error);
+      setUploadMessage("Failed to upload movie. Please try again."); // Set error message
+    }
+  };
+  // Function to reset form fields
+  const resetForm = () => {
+    setMovieName("");
+    setMovieDescription("");
+    setImdbRating("");
+    setDuration("");
+    setReleaseDate("");
+    setThumbnail(null);
+    setMovieFile(null);
+    setGenre("");
+    setCategory("");
+    setMovieExists(false);
+    setUploadMessage(""); // Reset message
   };
 
   // Restrict IMDb Rating to values between 1 and 10 with floating numbers
@@ -53,8 +143,12 @@ const MovieUpload = () => {
             className="w-full border border-gray-700 p-2 rounded-md bg-black text-white"
             placeholder="Enter movie name"
             value={movieName}
-            onChange={(e) => setMovieName(e.target.value)}
+            onChange={handleMovieNameChange} // Handle input change
+            onBlur={handleMovieNameBlur} // Check existence on blur
           />
+          {movieExists && (
+            <p className="text-red-500 mt-2">This movie already exists!</p> // Message if movie exists
+          )}
         </div>
         {/* Description */}
         <div>
@@ -165,11 +259,13 @@ const MovieUpload = () => {
           <button
             type="submit"
             className="bg-yellow-300 px-4 py-2 text-black rounded-md"
+            disabled={movieExists} // Disable button if movie exists
           >
             Upload
           </button>
         </div>
       </form>
+      {uploadMessage && <p className="mt-4 text-yellow-300">{uploadMessage}</p>}
     </div>
   );
 };

@@ -12,4 +12,6 @@ public interface MovieRepository extends MongoRepository<Movie, String> {
     @Query("{ 'name': { $regex: ?0, $options: 'i' } }")
         // Case-insensitive search
     List<Movie> findByNameContaining(String name);
+
+    Movie findByName(String name);
 }

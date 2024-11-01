@@ -59,8 +59,27 @@ const Login = () => {
 
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(email, password).then(
-        () => {
-          navigate("/homepage");
+        (response) => {
+          // Extract token from the Authorization header
+          const token = response.headers["authorization"]?.split(" ")[1]; // Get token part after "Bearer"
+
+          if (token) {
+            // Decode the JWT token (assuming it's in the form of 'Bearer <token>')
+            const payload = JSON.parse(atob(token.split(".")[1])); // Decode the payload of the JWT
+
+            const userRole = payload.role; // Assuming `role` is included in the token payload
+
+            // Navigate based on the user's role
+            if (userRole === "ADMIN") {
+              navigate("/admin");
+            } else if (userRole === "USER") {
+              navigate("/homepage");
+            } else {
+              console.error("Unknown user role:", userRole);
+            }
+          } else {
+            console.error("Token not found in response headers.");
+          }
         },
         (error) => {
           const resMessage =

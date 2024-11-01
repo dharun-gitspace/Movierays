@@ -1,24 +1,21 @@
+// MoviePlayer.js
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { getAuthHeader } from "../../services/auth-header";
+import { fetchMovieVideo } from "../../services/movie.service";
+
 const MoviePlayer = ({ movieId }) => {
   const [videoUrl, setVideoUrl] = useState("");
-  const headers = getAuthHeader();
+
   useEffect(() => {
-    const fetchMovie = async () => {
+    const loadMovieVideo = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/movies/watch/${movieId}`,
-          { headers, responseType: "blob" }
-        );
-        const url = URL.createObjectURL(response.data);
+        const url = await fetchMovieVideo(movieId);
         setVideoUrl(url);
       } catch (error) {
         console.error("Error fetching movie:", error);
       }
     };
 
-    fetchMovie();
+    loadMovieVideo();
   }, [movieId]);
 
   return (

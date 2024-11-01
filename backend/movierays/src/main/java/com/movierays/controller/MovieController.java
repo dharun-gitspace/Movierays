@@ -22,6 +22,10 @@ public class MovieController {
         return movieService.searchMovies(query);
     }
 
+    @GetMapping("/search/name")
+    public Boolean isMovieByNameExists(@RequestParam String name) {
+        return movieService.searchMovieByName(name);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Movie> getMovieById(@PathVariable String id) {
         return movieService.getMovieById(id).map(movie -> ResponseEntity.ok(movie)).orElseGet(() -> ResponseEntity.status(404).build());
@@ -47,5 +51,6 @@ public class MovieController {
         List<Movie> movies = movieService.getAllMovies();
         return ResponseEntity.ok(movies);
     }
+
 
 }

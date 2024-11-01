@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../user/Navbar"
 import MovieUpload from "./MovieUpload";
 import EditMovie from "./EditMovie";
 import LogViewer from "./LogViewer"; // Assume you will implement later
@@ -28,10 +28,10 @@ const AdminDashboard = () => {
         return "Upload Movie";
       case "edit":
         return "Edit Movie Details";
-      case "userLogs":
-        return "View User Logs";
-      case "myLogs":
-        return "My Logs";
+      // case "userLogs":
+      //   return "View User Logs";
+      // case "myLogs":
+      //   return "My Logs";
       default:
         return "Dashboard";
     }
@@ -70,14 +70,14 @@ const AdminDashboard = () => {
               Upload Movie
             </button>
 
-            <button
+            {/* <button
               className="bg-black text-yellow-300 px-8 py-4 rounded-md font-bold text-lg shadow-md hover:bg-gray-900"
               onClick={() => setActiveComponent("edit")}
             >
               Edit Movie Details
-            </button>
+            </button> */}
 
-            <button
+            {/* <button
               className="bg-black text-yellow-300 px-8 py-4 rounded-md font-bold text-lg shadow-md hover:bg-gray-900"
               onClick={() => setActiveComponent("userLogs")}
             >
@@ -89,7 +89,7 @@ const AdminDashboard = () => {
               onClick={() => setActiveComponent("myLogs")}
             >
               My Logs
-            </button>
+            </button> */}
           </div>
         )}
       </div>

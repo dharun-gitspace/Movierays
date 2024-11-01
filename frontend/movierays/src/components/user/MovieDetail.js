@@ -1,20 +1,16 @@
+// MovieDetail.js
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import MoviePlayer from "./MoviePlayer";
-import { getAuthHeader } from "../../services/auth-header";
+import { fetchThumbnail } from "../../services/movie.service";
 
 const MovieDetail = ({ movie }) => {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [showPlayer, setShowPlayer] = useState(false); // State to control MoviePlayer visibility
-  const headers = getAuthHeader();
+  const [showPlayer, setShowPlayer] = useState(false);
+
   useEffect(() => {
-    const fetchThumbnail = async () => {
+    const loadThumbnail = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/api/movies/thumbnail/${movie.id}`,
-          { headers, responseType: "blob" }
-        );
-        const imageUrl = URL.createObjectURL(response.data);
+        const imageUrl = await fetchThumbnail(movie.id);
         setThumbnailUrl(imageUrl);
       } catch (error) {
         console.error("Error fetching thumbnail:", error);
@@ -22,12 +18,12 @@ const MovieDetail = ({ movie }) => {
     };
 
     if (movie.id) {
-      fetchThumbnail();
+      loadThumbnail();
     }
   }, [movie]);
 
   const handleWatchNow = () => {
-    setShowPlayer(true); // Show MoviePlayer when button is clicked
+    setShowPlayer(true);
   };
 
   return (
